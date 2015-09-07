@@ -1,0 +1,6 @@
+---
+hostname_hostname: "{{inventory_hostname}}"
+hostname_shortname: "{{hostname_hostname.split('.')[0]}}"
+hostname_ipaddress: "{{ansible_default_ipv4.address}}"
+hostname_aliases: []
+hostname_othernames: []

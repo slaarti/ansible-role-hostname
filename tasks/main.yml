@@ -1,0 +1,25 @@
+---
+- name: Set the active hostname.
+  hostname: name="{{hostname_hostname}}"
+
+- name: Update /etc/hostname.
+  template: src=etchostname.j2 dest=/etc/hostname owner=root group=root mode=0644
+
+- name: Configure localhost in /etc/hosts.
+  lineinfile:
+    dest: /etc/hosts
+    regexp: "^{{ '127.0.0.1' | regex_escape() }}"
+    line: "127.0.0.1  localhost"
+
+- name: Configure main host in /etc/hosts.
+  lineinfile:
+    dest: /etc/hosts
+    regexp: "^({{ '127.0.1.1' | regex_escape() }}|{{ hostname_ipaddress | regex_escape() }}"
+    line: "{{hostname_ipaddress}}  {{hostname_hostname}}{% if hostname_shortname != hostname_hostname %} {{hostname_shortname}}{% endif %}{% if hostname_aliases != [] %} {{ hostname_aliases|join(' ') }}{% endif %}"
+
+- name: Configure additional hosts in /etc/hosts.
+  lineinfile:
+    dest: /etc/hosts
+    regexp: "^{{ item.address | regex_escape() }}"
+    line: "{{item.address}} {% if item.hostnames is iterable %}{{ item.hostnames | list(' ') }}{% else %}{{item.hostnames}}{% endif %}"
+    with_items: "{{ hostname_othernames }}"
