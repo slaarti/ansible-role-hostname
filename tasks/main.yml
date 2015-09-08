@@ -22,4 +22,4 @@
     dest: /etc/hosts
     regexp: "^{{ item.address | regex_escape() }}"
     line: "{{item.address}} {% if item.hostnames is iterable %}{{ item.hostnames | list(' ') }}{% else %}{{item.hostnames}}{% endif %}"
-    with_items: "{{ hostname_othernames }}"
+  with_items: "{{ hostname_othernames }}"
