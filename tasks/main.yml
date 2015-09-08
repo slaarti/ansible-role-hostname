@@ -14,7 +14,7 @@
 - name: Configure main host in /etc/hosts.
   lineinfile:
     dest: /etc/hosts
-    regexp: "^({{ '127.0.1.1' | regex_escape() }}|{{ hostname_ipaddress | regex_escape() }}"
+    regexp: "^({{ '127.0.1.1' | regex_escape() }}|{{ hostname_ipaddress | regex_escape() }})"
     line: "{{hostname_ipaddress}}  {{hostname_hostname}}{% if hostname_shortname != hostname_hostname %} {{hostname_shortname}}{% endif %}{% if hostname_aliases != [] %} {{ hostname_aliases|join(' ') }}{% endif %}"
 
 - name: Configure additional hosts in /etc/hosts.
